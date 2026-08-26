@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -14,24 +14,27 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
-    public function login(LoginRequest $request)
+    public function store(LoginRequest $request)
     {
         // Validation is done in the LoginRequest class
 
-        if ( Auth::attempt($request->validated()) )
-        {
-            session()->regenerate();
-            return redirect()->route('index');
-        } else {    // If login fails
+        if (! Auth::attempt($request->validated(), $request->boolean('remember'))) {
             return back()->withErrors([
-                'email' => 'The provided credentials do not match our records.'
+                'email' => 'The provided credentials do not match our records.',
             ])->onlyInput('email');
         }
+
+        $request->session()->regenerate();
+
+        return redirect()->intended(route('products.index'));
     }
 
-    public function logout()
+    public function destroy(Request $request)
     {
         Auth::logout();
-        return redirect()->route('index');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return to_route('index');
     }
 }

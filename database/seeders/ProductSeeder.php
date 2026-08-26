@@ -3,10 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Product;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-// use App\Models\Seller;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
 {
@@ -15,11 +13,16 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        //
-        for($i=0; $i<10; $i++) {    // truly randomize sellers
-            Product::factory()->count(5)->create([
-                'user_id' => User::pluck('id')->random()
-            ]);
+        $userIds = User::query()->pluck('id');
+
+        if ($userIds->isEmpty()) {
+            $this->command?->warn('No users found; products were not seeded.');
+
+            return;
         }
+
+        Product::factory(50)->create([
+            'user_id' => fn () => $userIds->random(),
+        ]);
     }
 }

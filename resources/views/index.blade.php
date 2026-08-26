@@ -1,27 +1,30 @@
 @extends('layout')
 
-@section('title', 'Home Page')
+@section('title', 'Product Manager')
 
 @section('content')
-
-<section>
-    <h2>About Our Products</h2>
-    <p>Our platform offers a wide variety of products from multiple sellers. You can view, manage, and organize your product listings with ease.</p>
+<section class="card">
+    <p class="eyebrow">Product operations</p>
+    <h1>Manage your catalog with confidence.</h1>
+    <p class="muted">A focused workspace for creating, searching and maintaining product listings.</p>
+    <div class="form-actions">
+        <a class="button button-primary" href="{{ route('products.index') }}">Browse products</a>
+        @guest
+            <a class="button button-secondary" href="{{ route('register') }}">Create an account</a>
+        @else
+            <a class="button button-secondary" href="{{ route('products.create') }}">Add a product</a>
+        @endguest
+    </div>
 </section>
 
-<section>
-    <h2>Features</h2>
-    <ul>
-        <li>Easy product listing and management.</li>
-        <li>Track sales and inventory effortlessly.</li>
-        <li>Manage multiple sellers with a seamless interface.</li>
-    </ul>
+<section class="form-grid">
+    <div class="card">
+        <h2>Simple inventory</h2>
+        <p class="muted">Keep names, pricing, categories and stock levels in one place.</p>
+    </div>
+    <div class="card">
+        <h2>Built for teams</h2>
+        <p class="muted">Each seller manages their own listings while the catalog stays searchable.</p>
+    </div>
 </section>
-
-<section>
-    <h2>Get Started</h2>
-    <p>Ready to add products? Use the admin panel to start listing your products, manage pricing, and monitor inventory levels.</p>
-    <p>For more information, please contact support or visit the <a href="#">help center</a>.</p>
-</section>
-
 @endsection

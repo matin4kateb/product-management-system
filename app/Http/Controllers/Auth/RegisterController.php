@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Requests\RegisterRequest;
-// use App\Models\Seller;
 use App\Models\User;
 
 class RegisterController extends Controller
@@ -20,12 +18,8 @@ class RegisterController extends Controller
         // Authorization is done in the RegisterRequest
 
         // Insert data
-        User::create([
-            ...$request->validated(),
-            'password' => bcrypt($request->validated('password'))    // Hash user's password
-        ]);
+        User::create($request->validated());
 
-        session()->flash('status', 'Registration was successful; Login to your account.');
-        return redirect()->route('login');  // Now login (redirect user to login page after registration)
+        return to_route('login')->with('status', 'Registration was successful; login to your account.');
     }
 }

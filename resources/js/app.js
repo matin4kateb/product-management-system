@@ -1,75 +1,45 @@
 import './bootstrap';
 
-// 1. Smooth scroll for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
+const menuToggle = document.querySelector('#menu-toggle');
+const topNav = document.querySelector('#main-navigation');
+
+menuToggle?.addEventListener('click', () => {
+    const isOpen = topNav?.classList.toggle('open') ?? false;
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+});
+
+document.querySelectorAll('.alert-close').forEach((button) => {
+    button.addEventListener('click', () => {
+        button.closest('.alert')?.remove();
     });
 });
 
-// 2. Mobile navigation toggle (for a mobile menu in header/sidebar)
-const menuToggle = document.querySelector('#menu-toggle'); // Assuming you have a menu toggle button
-const nav = document.querySelector('nav');
+document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+    button.addEventListener('click', () => {
+        const input = document.querySelector(button.dataset.passwordToggle);
+        if (!input) return;
 
-if (menuToggle) {
-    menuToggle.addEventListener('click', () => {
-        nav.classList.toggle('open');  // Toggle an 'open' class to show/hide the menu
+        const shouldShow = input.type === 'password';
+        input.type = shouldShow ? 'text' : 'password';
+        button.textContent = shouldShow ? 'Hide' : 'Show';
+        button.setAttribute('aria-label', `${shouldShow ? 'Hide' : 'Show'} password`);
     });
-}
+});
 
-// 3. Simple form validation (ensuring required fields are filled out)
-const form = document.querySelector('form');
-if (form) {
-    form.addEventListener('submit', function (e) {
-        let isValid = true;
-        form.querySelectorAll('input[required], textarea[required]').forEach(input => {
-            if (!input.value.trim()) {
-                isValid = false;
-                input.classList.add('error');
-                alert(`${input.name} is required!`);
-            } else {
-                input.classList.remove('error');
-            }
-        });
-        
-        if (!isValid) {
-            e.preventDefault();  // Prevent form submission if invalid
+document.querySelectorAll('form[data-confirm]').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+        if (!window.confirm(form.dataset.confirm)) {
+            event.preventDefault();
         }
     });
-}
+});
 
-// 4. Modal Toggle (for showing hidden information like alerts)
-const modal = document.querySelector('#modal');
-const openModalBtn = document.querySelector('#open-modal');
-const closeModalBtn = document.querySelector('#close-modal');
+document.querySelectorAll('form').forEach((form) => {
+    form.addEventListener('submit', () => {
+        const submitButton = form.querySelector('button[type="submit"][data-submit-label]');
+        if (!submitButton) return;
 
-if (openModalBtn && modal) {
-    openModalBtn.addEventListener('click', () => {
-        modal.classList.add('open');  // Show the modal
-    });
-}
-
-if (closeModalBtn) {
-    closeModalBtn.addEventListener('click', () => {
-        modal.classList.remove('open');  // Close the modal
-    });
-}
-
-// 5. Back to top button (appears after scrolling)
-const backToTopBtn = document.querySelector('#back-to-top');
-if (backToTopBtn) {
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            backToTopBtn.classList.add('visible'); // Show button after scrolling 300px
-        } else {
-            backToTopBtn.classList.remove('visible');
-        }
-    });
-
-    backToTopBtn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-}
+        submitButton.disabled = true;
+        submitButton.textContent = submitButton.dataset.submitLabel;
+    }, { once: true });
+});

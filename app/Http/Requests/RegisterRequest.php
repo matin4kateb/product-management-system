@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,20 +19,19 @@ class RegisterRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'national_id' => 'required|min:4|max:16|regex:/^\d+$/|unique:users,national_id',
-            'password' => 'required|confirmed|min:10|max:255',
-            'name' => 'required|max:32',
-            'lastname' => 'required|max:32',
-            'city' => 'required|max:32',
-            'address' => 'required|max:255',
-            'email' => 'required|email:rfc,dns|unique:users,email|max:255',
-            'phone' => 'required|regex:/^\+?[0-9\s\-\(\)]+$/|max:20|unique:users,phone'
+            'national_id' => ['required', 'string', 'digits_between:4,16', 'unique:users,national_id'],
+            'password' => ['required', 'confirmed', 'string', 'min:10', 'max:255'],
+            'name' => ['required', 'string', 'max:32'],
+            'lastname' => ['required', 'string', 'max:32'],
+            'city' => ['required', 'string', 'max:32'],
+            'address' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'unique:users,email', 'max:255'],
+            'phone' => ['required', 'string', 'max:20', 'regex:/^\+?[0-9\s\-\(\)]+$/', 'unique:users,phone'],
         ];
-    } 
-
+    }
 }

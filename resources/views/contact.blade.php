@@ -3,31 +3,19 @@
 @section('title', 'Contact us')
 
 @section('content')
-<h2>Contact Us</h2>
-<p>If you have any questions or need assistance, please feel free to reach out to us. We’re here to help!</p>
-
-<form action="/submit-contact" method="POST">
-    <div>
-        <label for="name">Full Name:</label>
-        <input type="text" id="name" name="name" required>
+<section class="card">
+    <p class="eyebrow">Support</p>
+    <h1>Contact us</h1>
+    <p class="muted">Have a question about your catalog? Our support team is happy to help.</p>
+    <div class="form-grid">
+        <div>
+            <h2>Email</h2>
+            <p><a href="mailto:support@example.com">support@example.com</a></p>
+        </div>
+        <div>
+            <h2>Phone</h2>
+            <p><a href="tel:+11234567890">+1 (123) 456-7890</a></p>
+        </div>
     </div>
-
-    <div>
-        <label for="email">Email Address:</label>
-        <input type="text" id="email" name="email" required>
-    </div>
-
-    <div>
-        <label for="message">Your Message:</label>
-        <textarea id="message" name="message" rows="5" required></textarea>
-    </div>
-
-    <div>
-        <button type="submit">Send Message</button>
-    </div>
-</form>
-
-<p>If you prefer to speak with us directly, you can also reach us at:</p>
-<p><strong>Phone:</strong> (123) 456-7890</p>
-<p><strong>Email:</strong> support@example.com</p>
+</section>
 @endsection

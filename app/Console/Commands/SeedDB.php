@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 
 class SeedDB extends Command
 {
@@ -12,21 +11,23 @@ class SeedDB extends Command
      *
      * @var string
      */
-    protected $signature = 'app:seed-d-b';
+    protected $signature = 'app:seed-db {--class=Database\\Seeders\\DatabaseSeeder}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Seed the application database';
 
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
-        Artisan::call('db:seed', [ '--class' => 'SellerSeeder' ] );
-        $this->info('[!] Seeding complete (' . now() . ')');
+        $this->call('db:seed', ['--class' => $this->option('class')]);
+        $this->info('Database seeding complete.');
+
+        return self::SUCCESS;
     }
 }

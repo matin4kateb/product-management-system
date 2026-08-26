@@ -2,26 +2,48 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-// use App\Models\Seller;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, \Illuminate\Database\Eloquent\SoftDeletes;
+
     protected $fillable = [
-        // 'seller_id',
+        'user_id',
+        'category_id',
+        'sku',
         'name',
         'price',
         'description',
-        'quantity'
+        'quantity',
+        'status',
     ];
 
-    //
-    public function user() : BelongsTo
+    protected static function booted(): void
+    {
+        static::creating(function (Product $product): void {
+            $product->sku ??= 'PRD-'.str()->upper(str()->random(12));
+        });
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'price' => 'decimal:2',
+            'quantity' => 'integer',
+            'status' => 'string',
+        ];
+    }
+
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 }

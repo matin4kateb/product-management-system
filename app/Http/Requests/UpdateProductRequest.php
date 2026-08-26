@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateProductRequest extends FormRequest
 {
@@ -11,22 +13,22 @@ class UpdateProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // return false;
-        return true;
+        return $this->user()?->can('update', $this->route('product')) ?? false;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'name' => 'required|min:2|max:64',
-            'price' => 'required|numeric|between:0,999999.99',
-            'description' => 'max:255',
-            'quantity' => 'required|integer|max:999999'
+            'category_id' => ['nullable', 'integer', Rule::exists('categories', 'id')->where('is_active', true)],
+            'name' => ['required', 'string', 'min:2', 'max:64'],
+            'price' => ['required', 'numeric', 'decimal:0,2', 'between:0,9999999999.99'],
+            'description' => ['nullable', 'string', 'max:2000'],
+            'quantity' => ['required', 'integer', 'min:0', 'max:999999'],
         ];
     }
 }

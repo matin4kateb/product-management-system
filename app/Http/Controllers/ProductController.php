@@ -3,77 +3,73 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddProductRequest;
-use App\Models\Product;
 use App\Http\Requests\UpdateProductRequest;
-
-use function Laravel\Prompts\alert;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Category;
+use App\Models\Product;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-
-    public function add()
+    public function index(Request $request)
     {
-        return view('product.add');
-    }
+        $products = Product::query()
+            ->with(['user:id,name,lastname', 'category:id,name'])
+            ->where('status', 'active')
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $search = trim((string) $request->string('search'));
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('sku', 'like', "%{$search}%");
+                });
+            })
+            ->when($request->filled('category'), fn ($query) => $query->where('category_id', $request->integer('category')))
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
 
-    public function addAction(AddProductRequest $addRequest)
-    {
-        $user_id = $addRequest->validated('user_id');
-        $user_id = (int) $user_id;
-        
-        // Authorize user
-        if ( Auth::id() != $user_id ) // If user tries to add post as another ID
-            abort(403);
-
-        // Validate data
-        Product::insert([
-            'user_id' => Auth::id(),
-            ...$addRequest->validated()
+        return view('product.index', [
+            'products' => $products,
+            'categories' => Category::query()->where('is_active', true)->orderBy('name')->get(['id', 'name']),
         ]);
-        
-        session()->flash('status', 'Product added successfully.');
-        return redirect()->route('product.view');
     }
 
-    public function deleteAction(Product $product)
+    public function create()
     {
-        if (Auth::id() != $product->user_id)    // authorize
-            abort(403);
+        return view('product.create', [
+            'categories' => Category::query()->where('is_active', true)->orderBy('name')->get(['id', 'name']),
+        ]);
+    }
+
+    public function store(AddProductRequest $request)
+    {
+        $request->user()->products()->create($request->validated());
+
+        return to_route('products.index')->with('status', 'Product added successfully.');
+    }
+
+    public function edit(Product $product)
+    {
+        $this->authorize('update', $product);
+
+        return view('product.edit', [
+            'product' => $product,
+            'categories' => Category::query()->where('is_active', true)->orderBy('name')->get(['id', 'name']),
+        ]);
+    }
+
+    public function update(UpdateProductRequest $request, Product $product)
+    {
+        $product->update($request->validated());
+
+        return to_route('products.index')->with('status', 'Product updated successfully.');
+    }
+
+    public function destroy(Product $product)
+    {
+        $this->authorize('delete', $product);
 
         $product->delete();
-        // alert('Product deleted successfully.');
-        
-        session()->flash('status', 'Product deleted successfully.');
-        return redirect()->route('product.view');
+
+        return to_route('products.index')->with('status', 'Product deleted successfully.');
     }
-
-    public function update(Product $product)
-    {
-        if (Auth::id() != $product->user_id)
-            abort(403); // Authorize
-
-        return view('product.update', compact('product'));
-    }
-
-    public function updateAction(Product $product, UpdateProductRequest $upRequest)
-    {
-        if (Auth::id() != $product->user_id)
-            abort(403);
-
-        $product->update([
-            /* Validate data */
-            ...$upRequest->validated()
-        ]);
-        
-        session()->flash('status', 'Product updated successfully.');
-        return redirect()->route('product.view');
-    }
-
-    public function viewProds()
-    {
-        $products = Product::all();
-        return view('product.view', compact('products'));
-    }
-
 }
