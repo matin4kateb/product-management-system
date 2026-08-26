@@ -1,13 +1,21 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "matin-kateb/product-manager",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "An open-source Laravel product catalog and inventory manager.",
     "keywords": [
         "laravel",
-        "framework"
+        "product-management",
+        "inventory",
+        "catalog"
     ],
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Mohammad Matin Kateb",
+            "role": "Developer"
+        }
+    ],
     "require": {
         "php": "^8.3",
         "laravel/framework": "^13.0",
