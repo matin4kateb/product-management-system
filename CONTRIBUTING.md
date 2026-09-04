@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for contributing to Product Manager.
+Thank you for contributing to Product Management System.
 
 ## Before you start
 

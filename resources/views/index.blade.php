@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Product Manager')
+@section('title', 'Product Management System')
 
 @section('content')
 <section class="card">

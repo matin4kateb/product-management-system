@@ -1,0 +1,8 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="logo-title logo-desc">
+    <title id="logo-title">Product Management System logo</title>
+    <desc id="logo-desc">A blue rounded square containing three organized product layers.</desc>
+    <rect width="48" height="48" rx="14" fill="#3157D5"/>
+    <path d="M12 17.5L24 12L36 17.5L24 23L12 17.5Z" fill="white"/>
+    <path d="M12 23.5L24 29L36 23.5V29.5L24 35L12 29.5V23.5Z" fill="white" fill-opacity=".82"/>
+    <path d="M12 30L24 35.5L36 30V36L24 41.5L12 36V30Z" fill="white" fill-opacity=".58"/>
+</svg>

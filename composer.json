@@ -1,8 +1,8 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "matin-kateb/product-manager",
+    "name": "matin-kateb/product-management-system",
     "type": "project",
-    "description": "An open-source Laravel product catalog and inventory manager.",
+    "description": "An open-source Laravel product catalog and inventory management system.",
     "keywords": [
         "laravel",
         "product-management",

@@ -1,11 +1,11 @@
-# Product Manager
+# Product Management System
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![PHP](https://img.shields.io/badge/PHP-8.3%2B-777BB4.svg?logo=php&logoColor=white)
 ![Laravel](https://img.shields.io/badge/Laravel-13.x-FF2D20.svg?logo=laravel&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933.svg?logo=node.js&logoColor=white)
 
-Product Manager is an open-source Laravel application for product catalogs and inventory management. It provides authentication, product ownership, categories, stock quantities, search, filtering, pagination and a responsive interface.
+Product Management System is an open-source Laravel application for product catalogs and inventory management. It provides authentication, product ownership, categories, stock quantities, search, filtering, pagination and a responsive interface.
 
 ## Features
 
@@ -31,7 +31,7 @@ Product Manager is an open-source Laravel application for product catalogs and i
 
 ```bash
 git clone <repository-url>
-cd product-manage
+cd product-management-system
 composer install
 npm install
 cp .env.example .env

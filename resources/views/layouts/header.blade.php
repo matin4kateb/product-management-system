@@ -1,5 +1,8 @@
 <header class="topbar">
-    <a class="brand" href="{{ route('index') }}">Product Manager</a>
+    <a class="brand" href="{{ route('index') }}" aria-label="Product Management System home">
+        <img src="{{ asset('logo.svg') }}" alt="" aria-hidden="true">
+        <span>Product Management System</span>
+    </a>
     <button id="menu-toggle" class="menu-toggle" type="button" aria-controls="main-navigation" aria-expanded="false" aria-label="Toggle navigation">
         <span aria-hidden="true">&#9776;</span>
     </button>
